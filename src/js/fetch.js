@@ -12,7 +12,7 @@ export class PixabayApi {
     fetchImg() {
         const searchParams = new URLSearchParams ({
             q: 'cats',
-            page: 1,
+            page: this.page,
             per_page: 40,
             orientation: 'horizontal',
             image_type: 'photo',

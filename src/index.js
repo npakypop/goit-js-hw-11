@@ -1,21 +1,22 @@
 import { PixabayApi } from './js/fetch.js'
 
+const formRef = document.querySelector('#search-form');
+
 const pixabayAPi = new PixabayApi();
-console.log("pixabayAPi", pixabayAPi)
 
 pixabayAPi.fetchImg();
 
-// const formRef = document.querySelector('#search-form');
-// formRef.addEventListener('submit', onFormSearch);
+formRef.addEventListener('submit', onFormSearch);
 
-// function onFormSearch(event) { 
-//     event.preventDefault();
-//     const request = event.currentTarget.searchQuery.value;
-//     fetchImg(request)
-        // .then(response => creatList(response))
-        // .then(response => console.log(response))
-        // .catch(err => console.log(err));
-// }
+function onFormSearch(event) { 
+    event.preventDefault();
+    console.log("hello");
+    const request = event.target.elements.searchQuery.value;
+    pixabayAPi.fetchImg(request)
+        .then(response => creatList(response))
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+}
 
 // fetchCountries(event.target.value.trim())
 // .then(data => {

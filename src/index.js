@@ -1,4 +1,9 @@
 import { PixabayApi } from './js/fetch.js'
+import createGalleryItem from './templates/gallery_item.hbs';
+
+// console.log("template", template());
+
+
 
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -12,8 +17,8 @@ function onFormSearch(event) {
     pixabayApi.request = event.target.elements.searchQuery.value;
     pixabayApi.fetchImg()
         .then(response => {
-            console.log(response);
-            // galleryRef.innerHTML = '';
-
+            // console.log(createGalleryItem(response.hits));
+            galleryRef.innerHTML = createGalleryItem(response.hits);
         }).catch(err => console.log(err));
 }
+

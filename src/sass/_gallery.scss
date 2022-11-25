@@ -1,0 +1,16 @@
+.gallery{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+// .photo-card{
+// }
+
+.photo-card{
+    flex-basis: calc((100% - 200px) / 3);
+}
+.info{
+    display: flex;
+    justify-content: space-between;    
+}

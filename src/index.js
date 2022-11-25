@@ -1,16 +1,21 @@
-import { fetchImg } from './js/fetch.js'
+import { PixabayApi } from './js/fetch.js'
 
-const formRef = document.querySelector('#search-form');
-formRef.addEventListener('submit', onFormSearch);
+const pixabayAPi = new PixabayApi();
+console.log("pixabayAPi", pixabayAPi)
 
-function onFormSearch(event) { 
-    event.preventDefault();
-    const request = event.currentTarget.searchQuery.value;
-    fetchImg(request)
-        .then(response => creatList(response))
-        .catch(err => console.log(err));
-        
-}
+pixabayAPi.fetchImg();
+
+// const formRef = document.querySelector('#search-form');
+// formRef.addEventListener('submit', onFormSearch);
+
+// function onFormSearch(event) { 
+//     event.preventDefault();
+//     const request = event.currentTarget.searchQuery.value;
+//     fetchImg(request)
+        // .then(response => creatList(response))
+        // .then(response => console.log(response))
+        // .catch(err => console.log(err));
+// }
 
 // fetchCountries(event.target.value.trim())
 // .then(data => {
@@ -30,7 +35,7 @@ function onFormSearch(event) {
 // })
 // }
 
-function creatList(list) { 
+// function creatList(list) { 
     
     //  for (const el of list) {      
     //     const listItem = document.createElement('li');
@@ -38,4 +43,4 @@ function creatList(list) {
     //     listItem.classList.add('item_sm');
     //     listItem.innerHTML = `<img src='${el.flags.png}' width='50'></img><span>${el.name.official}</span>`;
     // }
-}
+// }

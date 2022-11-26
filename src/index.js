@@ -1,6 +1,8 @@
 import { PixabayApi } from './js/fetch.js'
 import createGalleryItem from './templates/gallery_item.hbs';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import "simplelightbox/dist/simple-lightbox.min.css";
+import SimpleLightbox from "simplelightbox";
 
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -8,19 +10,33 @@ const loadMoreBtn = document.querySelector('.btn-more');
 
 const pixabayApi = new PixabayApi();
 
+
 formRef.addEventListener('submit', onSearchBtn);
+
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionDelay: 250,
+    enableKeyboard: true,
+});
+
 loadMoreBtn.addEventListener('click', onLoadBtn);
+
 
 async function onSearchBtn(event) { 
     event.preventDefault();
     pixabayApi.page = 1;
-    pixabayApi.request = event.target.elements.searchQuery.value;
+    pixabayApi.request = event.target.elements.searchQuery.value.trim();
 
     try {
         const response = await pixabayApi.fetchImg();
         const { data } = response;
 
-        if (data.hits.length === 0) { 
+        // if (pixabayApi.request === '') {
+        //     galleryRef.innerHTML = '';
+        //     return;
+        //  }
+
+        if (data.hits.length === 0 || pixabayApi.request === '') { 
+            galleryRef.innerHTML = '';
             Notify.failure('Sorry, there are no images matching your search query. Please try again.');
             return;
         }

@@ -8,47 +8,100 @@ const loadMoreBtn = document.querySelector('.btn-more');
 
 const pixabayApi = new PixabayApi();
 
-formRef.addEventListener('submit', onFormSearch);
+formRef.addEventListener('submit', onSearchBtn);
 loadMoreBtn.addEventListener('click', onLoadBtn);
 
-
-function onFormSearch(event) { 
+async function onSearchBtn(event) { 
     event.preventDefault();
     pixabayApi.page = 1;
     pixabayApi.request = event.target.elements.searchQuery.value;
 
-    pixabayApi.fetchImg()
-        .then(response => {
-            if (response.hits.length === 0) { 
-                Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-                return;
-            }
+    try {
+        const response = await pixabayApi.fetchImg();
+        const { data } = response;
 
-            galleryRef.innerHTML = createGalleryItem(response.hits);
-            
-            if (Math.ceil(response.totalHits / 40) === 1) { 
-                Notify.info("We're sorry, but you've reached the end of search results.")
-                loadMoreBtn.classList.add('is-hidden');
-                return;
-            }
+        if (data.hits.length === 0) { 
+            Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            return;
+        }
 
-            loadMoreBtn.classList.remove('is-hidden');
-        })
-        .catch(err => console.log(err));
+        galleryRef.innerHTML = createGalleryItem(data.hits);
+        
+        if (Math.ceil(data.totalHits / 40) === 1) { 
+            Notify.info("We're sorry, but you've reached the end of search results.")
+            loadMoreBtn.classList.add('is-hidden');
+            return;
+        }
+
+        Notify.info(`Hooray! We found ${data.totalHits} images.`);
+
+        loadMoreBtn.classList.remove('is-hidden');
+    } catch (err) { 
+        console.log(err);
+    }
 }
 
-function onLoadBtn() { 
+async function onLoadBtn() { 
     pixabayApi.page += 1;
     
-    pixabayApi.fetchImg()
-        .then(response => {
-            galleryRef.insertAdjacentHTML('beforeend', createGalleryItem(response.hits));
-            
-            if (pixabayApi.page === Math.round(response.totalHits / 40)) { 
-                Notify.info("We're sorry, but you've reached the end of search results.")
-                loadMoreBtn.classList.add('is-hidden');
-                return;
-            }
-        })
-        .catch(err => console.log(err));
+    try {
+        const response = await pixabayApi.fetchImg();
+        const { data } = response;
+
+        galleryRef.insertAdjacentHTML('beforeend', createGalleryItem(data.hits));
+        
+        if (pixabayApi.page === Math.round(data.totalHits / 40)) { 
+            Notify.info("We're sorry, but you've reached the end of search results.")
+            loadMoreBtn.classList.add('is-hidden');
+            return;
+        }
+    } catch (err) {
+        console.log(err)
+    }
+    
 }
+//======================================================Using .then().Catch()===============================================================================
+// function onSearchBtn(event) { 
+//     event.preventDefault();
+//     pixabayApi.page = 1;
+//     pixabayApi.request = event.target.elements.searchQuery.value;
+
+//     pixabayApi.fetchImg()
+//         .then(response => {
+//             const { data } = response;
+
+//             if (data.hits.length === 0) { 
+//                 Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+//                 return;
+//             }
+
+//             galleryRef.innerHTML = createGalleryItem(data.hits);
+            
+//             if (Math.ceil(data.totalHits / 40) === 1) { 
+//                 Notify.info("We're sorry, but you've reached the end of search results.")
+//                 loadMoreBtn.classList.add('is-hidden');
+//                 return;
+//             }
+
+//             loadMoreBtn.classList.remove('is-hidden');
+//         })
+//         .catch(err => console.log(err));
+// }
+// 
+// function onLoadBtn() { 
+//     pixabayApi.page += 1;
+    
+//     pixabayApi.fetchImg()
+//         .then(response => {
+//             const { data } = response;
+
+//             galleryRef.insertAdjacentHTML('beforeend', createGalleryItem(data.hits));
+            
+//             if (pixabayApi.page === Math.round(data.totalHits / 40)) { 
+//                 Notify.info("We're sorry, but you've reached the end of search results.")
+//                 loadMoreBtn.classList.add('is-hidden');
+//                 return;
+//             }
+//         })
+//         .catch(err => console.log(err));
+// }

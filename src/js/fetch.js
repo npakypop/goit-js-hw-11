@@ -7,11 +7,12 @@ export class PixabayApi {
 
     constructor() {
         this.page = 1;
+        this.q = null; 
     }
     
     fetchImg() {
         const searchParams = new URLSearchParams ({
-            q: 'cats',
+            q: this.q,
             page: this.page,
             per_page: 40,
             orientation: 'horizontal',

@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 export class PixabayApi { 
-    #BASE_URL = 'https://pixabay.com/api';
+    #BASE_URL = 'https://pixabay.com/api/';
     #API_KEY = '31540043-77ba2a95f38c13f834341b2a6';
 
     constructor() {

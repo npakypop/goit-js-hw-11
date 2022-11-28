@@ -9,6 +9,7 @@ export class PixabayApi {
     constructor() {
         this.page = null;
         this.request = null;
+        this.per_page = 40;
     }
     
     fetchImg() {
@@ -16,7 +17,7 @@ export class PixabayApi {
             params: {
                 q: this.request,
                 page: this.page,
-                per_page: 40,
+                per_page: this.per_page,
                 orientation: 'horizontal',
                 image_type: 'photo',
                 safesearch: true,
